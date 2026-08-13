@@ -1,0 +1,29 @@
+# 把这个文件放到你 GitHub 仓库的 .github/workflows/ 目录下
+# 建议改名为 literature-push.yml
+name: Literature Push to WeChat
+
+on:
+  schedule:
+    # 每 3 天 UTC 00:30 = 北京时间 08:30 触发
+    # 格式：分 时 日 月 周
+    - cron: '30 0 */3 * *'
+  workflow_dispatch: {}   # 允许手动触发（用于首次测试）
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run literature push
+        env:
+          SENDKEY: ${{ secrets.SENDKEY }}   # Server酱 SendKey，从仓库 Secrets 读取
+          DAYS: '3'                          # 检索最近 3 天
+          TOP_N: '5'                         # 推送 5 篇
+        run: python literature_push.py
