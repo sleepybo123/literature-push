@@ -24,6 +24,9 @@ jobs:
       - name: Run literature push
         env:
           SENDKEY: ${{ secrets.SENDKEY }}   # Server酱 SendKey，从仓库 Secrets 读取
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}   # DeepSeek API Key
+          LLM_BASE_URL: 'https://api.deepseek.com'  # DeepSeek API 地址
+          LLM_MODEL: 'deepseek-chat'                # DeepSeek 对话模型
           DAYS: '3'                          # 检索最近 3 天
           TOP_N: '5'                         # 推送 5 篇
         run: python literature_push.py
